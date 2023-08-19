@@ -38,7 +38,7 @@ const Register = () => {
 
         if (isValid) {
             try {
-                const res = await fetch('http://localhost:3002/register', {
+                const res = await fetch('http://localhost:3000/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

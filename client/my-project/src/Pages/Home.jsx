@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
+
 // import axios from 'axios';
 
 const Home = () => {
@@ -16,6 +17,18 @@ const Home = () => {
   const [designationExperience, setDesignationExperience] = useState('')
   const [timePeriod, setTimePeriod] = useState('')
   const [employeeData, setEmployeeData] = useState([])
+
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+
+    if (!localStorage.getItem('token')) {
+      navigate('/login')
+    }
+
+
+  }, [])
 
 
   const handleNameChange = (e) => {
@@ -114,6 +127,19 @@ const Home = () => {
   // useEffect(() => {
   //   handleSubmit();
   // }, [])
+
+  const handleLogout = () => {
+    // Remove the token from localStorage
+    localStorage.removeItem('token');
+    console.log('token')
+  
+    // Clear the email and password state
+    setEmail('');
+    setPassword('');
+  
+    // Navigate to the signin page
+    navigate('/login');
+  };
 
   useEffect(() => {
     fetchEmployees();
@@ -309,6 +335,12 @@ const Home = () => {
           </div>
 
 
+          <div className='flex items-center justify-center '>
+            <button onClick={handleLogout} type="submit" className="text-white w-[300px] bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ">Logout</button>
+
+          </div>
+
+
         </div>
 
       </div>
@@ -324,13 +356,16 @@ const Home = () => {
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Mobile</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs  font-medium text-gray-500 uppercase">ID</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs  font-medium text-gray-500 uppercase">Address</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs  font-medium text-gray-500 uppercase">Designation</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs  font-medium text-gray-500 uppercase">JoiningDate</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs  font-medium text-gray-500 uppercase">Gender</th>
+
+
                   <th scope="col" className="px-6 py-3 text-left text-xs  font-medium text-gray-500 uppercase">CompanyName</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs  font-medium text-gray-500 uppercase">DesignationExperience</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs  font-medium text-gray-500 uppercase">TimePeriod</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs  font-medium text-gray-500 uppercase">Address</th>
+
                   <th scope="col" className="px-6 py-3 text-left text-xs  font-medium text-gray-500 uppercase">Action</th>
                 </tr>
               </thead>
@@ -354,8 +389,8 @@ const Home = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 ">{data.timePeriod}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 ">{data.address}</td>
                       <td className="px-6 py-4 whitespace-nowrap gap-x-3 flex  text-right text-sm font-medium">
-                        <Link> <button onClick={() => handleDelete(data._id)} className="text-red-500 hover:text-red-700" to="#">Delete  </button></Link>
-                        <Link to={"/edit/" + data._id}> <button className="text-blue-500 hover:text-blue-700" >Edit  </button></Link>
+                        <Link> <button onClick={() => handleDelete(data._id)} className="text-red-500 hover:text-red-700" to="#">Delete</button></Link>
+                        <Link to={"/edit/" + data._id}> <button className="text-blue-500 hover:text-blue-700" >Edit</button></Link>
                         {/* <Link to="/view"> <button className="text-green-500 hover:text-green-700" >View  </button></Link> */}
 
                       </td>
